@@ -1,25 +1,82 @@
 {
   "compilerOptions": {
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
-    "target": "es2023",
-    "lib": ["ES2023", "DOM"],
-    "module": "esnext",
-    "types": ["vite/client"],
+    "target": "ES2022",
+
+    "useDefineForClassFields": true,
+
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+
+    "module": "ESNext",
+
     "skipLibCheck": true,
 
-    /* Bundler mode */
     "moduleResolution": "bundler",
+
     "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
+
+    "resolveJsonModule": true,
+
+    "isolatedModules": true,
+
     "moduleDetection": "force",
+
     "noEmit": true,
+
     "jsx": "react-jsx",
 
-    /* Linting */
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "erasableSyntaxOnly": true,
-    "noFallthroughCasesInSwitch": true
+    "strict": true,
+
+    "noUnusedLocals": false,
+
+    "noUnusedParameters": false,
+
+    "noFallthroughCasesInSwitch": true,
+
+    "allowSyntheticDefaultImports": true,
+
+    "esModuleInterop": true,
+
+    "baseUrl": ".",
+
+    "paths": {
+      "@assets/*": ["src/assets/*"],
+
+      "@themes": ["src/themes/index"],
+      "@themes/*": ["src/themes/*"],
+
+      "@common": ["src/common/index"],
+      "@common/*": ["src/common/*"],
+
+      "@types": ["src/types/index"],
+
+      "@utils": ["src/utils/index"],
+      "@utils/*": ["src/utils/*"],
+
+      "@config/*": ["src/config/*"],
+
+      "@components": ["src/components/index"],
+      "@components/*": ["src/components/*"],
+
+      "@pages/*": ["src/pages/*"],
+
+      "@hooks/*": ["src/hooks/*"],
+
+      "@services/*": ["src/services/*"],
+
+      "@api/*": ["src/api/*"],
+
+      "@store/*": ["src/store/*"],
+
+      "@networking/*": ["src/networking/*"],
+
+      "@redux/*": ["src/redux/*"],
+
+      "@routers/*": ["src/routers/*"],
+
+      "@screens": ["src/screens/index"],
+      "@screens/*": ["src/screens/*"]
+    }
   },
+
   "include": ["src"]
 }

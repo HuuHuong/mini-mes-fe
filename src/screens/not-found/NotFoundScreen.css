@@ -1,0 +1,66 @@
+/* ── 404 Screen ── */
+.nf {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-xl);
+  padding: var(--sp-xl);
+  background: var(--c-canvas);
+  text-align: center;
+}
+
+.nf__card {
+  width: 200px;
+  height: 200px;
+  border-radius: var(--r-xxl);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-xxs);
+  margin-bottom: var(--sp-md);
+}
+
+.nf__card--orange {
+  background: linear-gradient(135deg, #ff7a3d 0%, #ff5577 100%);
+}
+
+.nf__eyebrow {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.nf__code {
+  font-size: 64px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -3px;
+  color: #fff;
+}
+
+.nf__hint {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.nf__title {
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -2px;
+  color: var(--c-ink);
+  max-width: 480px;
+}
+
+.nf__sub {
+  font-size: 18px;
+  line-height: 1.4;
+  color: var(--c-ink-muted);
+  letter-spacing: -0.18px;
+  max-width: 360px;
+}
