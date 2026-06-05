@@ -4,6 +4,7 @@ import type {
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from "axios";
+import { describeErrorResponse, describeSuccessResponse } from "./logger";
 
 // Define custom API Error format
 export interface ApiError {
@@ -13,7 +14,7 @@ export interface ApiError {
 }
 
 // Read Base URL from environment variables or use local ASP.NET Core URL as a fallback
-const BASE_URL = "http://localhost:5008/api";
+const BASE_URL = "http://localhost:5130/v1";
 
 export const apiClient: AxiosInstance = axios.create({
   baseURL: BASE_URL,
@@ -50,6 +51,7 @@ apiClient.interceptors.response.use(
       "status" in response.data &&
       "data" in response.data
     ) {
+      describeSuccessResponse(response);
       response.data = response.data.data;
     }
     return response;
@@ -63,6 +65,7 @@ apiClient.interceptors.response.use(
 
     if (error.response) {
       // Check if server returned a wrapped failed response: { data: { message, errors }, status }
+      describeErrorResponse(error);
       const errData = error.response.data;
       if (
         errData &&
@@ -71,7 +74,8 @@ apiClient.interceptors.response.use(
         "data" in errData
       ) {
         const errorDetail = errData.data; // { message, errors }
-        apiError.message = errorDetail.message || "An unexpected error occurred";
+        apiError.message =
+          errorDetail.message || "An unexpected error occurred";
         apiError.data = errorDetail;
       } else {
         // Fallback for standard/traditional formats

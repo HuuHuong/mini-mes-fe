@@ -1,7 +1,7 @@
 // const API_VERSION = '/api/v1/';
 
 const ApiEndPoint = {
-  DATA_TODO: "Todo",
+  LOGIN: "login",
 } as const;
 
 const configApi = () => {

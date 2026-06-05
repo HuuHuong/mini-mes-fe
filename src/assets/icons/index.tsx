@@ -2,7 +2,8 @@ import { memo, useMemo } from "react";
 import isEqual from "react-fast-compare";
 import IcoMoon, { IconProps as IcoMoonProps } from "react-icomoon";
 
-import { Colors, useTheme } from "@themes";
+import { useTheme } from "@common/hooks";
+import { Colors } from "@themes";
 
 import { VectorIconNames } from "./icon-name";
 import json from "./selection.json";

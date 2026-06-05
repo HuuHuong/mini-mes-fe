@@ -1,6 +1,6 @@
 import { createRef, forwardRef, useImperativeHandle } from "react";
 
-import { useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
 import type { RootState } from "@redux/stores/all-reducer";
 
@@ -49,4 +49,16 @@ export function getState<K extends keyof RootState>(selector: K): RootState[K] {
     return storeRef.current.getState(selector);
   }
   return {} as RootState[K];
+}
+
+export function selector<T>(
+  selectState: (_s: RootState) => T,
+  equalityFn = shallowEqual,
+): T {
+  return useSelector<any, T>(selectState, equalityFn);
+}
+
+export function useRedux() {
+  const dispatch = useDispatch();
+  return { dispatch, selector };
 }
