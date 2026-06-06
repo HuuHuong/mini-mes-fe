@@ -4,6 +4,8 @@ import { allReducer } from "./all-reducer";
 
 import { listenerMiddleware } from "../listener";
 import { subscribeActionMiddleware } from "@common/redux";
+import { persistReducer, persistStore } from "redux-persist";
+import { reduxPersistStorage } from "../../storage";
 
 /**
  * Use this instead storage of reduxPersist
@@ -17,8 +19,15 @@ import { subscribeActionMiddleware } from "@common/redux";
 
 const middleware = [subscribeActionMiddleware];
 
+const persistConfig = {
+  storage: reduxPersistStorage,
+  key: "MINI-MES",
+};
+
+const persistedReducer = persistReducer(persistConfig, allReducer);
+
 export const store = configureStore({
-  reducer: allReducer,
+  reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false })
       .prepend(listenerMiddleware.middleware)
@@ -27,5 +36,7 @@ export const store = configureStore({
 /**
  * export const persistore = persistStore(store);
  */
+
+export const persistor = persistStore(store);
 
 export type AppDispatch = typeof store.dispatch;

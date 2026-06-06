@@ -3,15 +3,18 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 import type { ThemeMode } from "@themes";
+import { IDataUser } from "@types";
 
 interface AppState {
   loading: boolean;
   themeMode: ThemeMode;
+  token: string;
 }
 
 const initialAppState: AppState = {
   loading: false,
   themeMode: "dark",
+  token: "",
 };
 
 const appSlice = createSlice({
@@ -26,6 +29,9 @@ const appSlice = createSlice({
     },
     toggleThemeMode(state) {
       state.themeMode = state.themeMode === "dark" ? "light" : "dark";
+    },
+    setToken(state, action: PayloadAction<string>) {
+      state.token = action.payload;
     },
   },
 });

@@ -29,19 +29,22 @@ import {
   AdministrationSettingsScreen,
   NotFoundScreen,
 } from "@screens";
+import { useRedux } from "@common";
 
 interface RouteProps {
   children: React.ReactNode;
 }
 
 export const ProtectedRoute = memo(({ children }: RouteProps) => {
-  const token = localStorage.getItem("token");
+  const { selector } = useRedux();
+  const token = selector((state) => state.app.token);
   return token ? <>{children}</> : <Navigate to="/login" replace />;
 });
 
 export const PublicRoute = memo(({ children }: RouteProps) => {
-  const token = localStorage.getItem("token");
-  return token ? <Navigate to="/analytics/oee" replace /> : <>{children}</>;
+  const { selector } = useRedux();
+  const token = selector((state) => state.app.token);
+  return token ? <Navigate to="/dashboard" replace /> : <>{children}</>;
 });
 
 export const AuthLayout = memo(() => {
@@ -150,7 +153,7 @@ export const AppRouter = memo(() => {
             path="/dashboard"
             element={<Navigate to="/analytics/oee" replace />}
           />
-          <Route path="/" element={<Navigate to="/analytics/oee" replace />} />
+          <Route path="/" element={<Navigate to="/login" replace />} />
         </Route>
 
         {/* 404 Fallback */}

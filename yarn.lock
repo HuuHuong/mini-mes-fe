@@ -1952,6 +1952,7 @@ __metadata:
     react-icomoon: ^2.6.1
     react-redux: ^9.3.0
     react-router-dom: ^7.17.0
+    redux-persist: ^6.0.0
     tailwindcss: ^4.3.0
     typescript: ~6.0.2
     typescript-eslint: ^8.59.2
@@ -2222,6 +2223,15 @@ __metadata:
   version: 19.2.6
   resolution: "react@npm:19.2.6"
   checksum: e250029064bff3f3308ee61e52c44bc9a0c938f6ef11a3f39c31db487ca173eb9b4b0cd3261e32613d3498df0da5586f3c582bc83cef54ad99bc5643772c4535
+  languageName: node
+  linkType: hard
+
+"redux-persist@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "redux-persist@npm:6.0.0"
+  peerDependencies:
+    redux: ">4.0.0"
+  checksum: edaf10dbf17351ce8058d0802357adae8665b3a1ff39371834e37838ddbe1a79cccbc717b8ba54acb5307651ccf51d0f7dc1cbc8dbae0726ff952d11ef61c6b8
   languageName: node
   linkType: hard
 
