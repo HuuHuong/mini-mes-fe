@@ -2,6 +2,13 @@
 
 const ApiEndPoint = {
   LOGIN: "login",
+  DASHBOARD_SUMMARY: "dashboard/summary",
+  PRODUCTS: "products",
+  MACHINES: "machines",
+  WORK_ORDERS: "work-orders",
+  QUALITY_CHECKS: "quality-checks",
+  INVENTORY: "inventory",
+  INVENTORY_TRANSACTIONS: "inventory/transactions",
 } as const;
 
 const configApi = () => {

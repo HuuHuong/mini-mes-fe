@@ -13,7 +13,6 @@ export const Sidebar = memo(() => {
     onLogout,
     onToggleTheme,
   } = useFunctions();
-
   return (
     <aside className="sidebar">
       {/* Header / Brand */}

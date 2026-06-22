@@ -19,6 +19,7 @@ export default defineConfig({
       "@types": resolve(__dirname, "src/types"),
       "@utils": resolve(__dirname, "src/utils"),
       "@themes": resolve(__dirname, "src/themes"),
+      "@services": resolve(__dirname, "src/services"),
     },
   },
 });

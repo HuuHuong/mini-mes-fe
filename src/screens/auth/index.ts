@@ -1,4 +1,5 @@
 export * from "./production/orders";
+export * from "./production/products";
 export * from "./production/schedule";
 export * from "./production/tracking";
 export * from "./machines/list";

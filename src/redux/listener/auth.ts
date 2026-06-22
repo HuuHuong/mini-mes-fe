@@ -14,6 +14,7 @@ takeLatestListeners(true)({
       if (response) {
         onSuccess(response.data);
         listenerApi.dispatch(appActions.setToken(response.data?.access_token));
+        localStorage.setItem("token", response.data?.access_token);
       }
     } catch (e) {
       onError?.(e);

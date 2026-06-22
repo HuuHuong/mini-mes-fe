@@ -7,16 +7,6 @@ import { subscribeActionMiddleware } from "@common/redux";
 import { persistReducer, persistStore } from "redux-persist";
 import { reduxPersistStorage } from "../../storage";
 
-/**
- * Use this instead storage of reduxPersist
- * import {persistStore, persistReducer} from 'redux-persist';
- * import {reduxPersistStorage} from '@utils';
- * const persistedReducer = persistReducer(
- *   {key: 'root', storage: reduxPersistStorage},
- *   allReducer,
- * );
- */
-
 const middleware = [subscribeActionMiddleware];
 
 const persistConfig = {
@@ -33,9 +23,6 @@ export const store = configureStore({
       .prepend(listenerMiddleware.middleware)
       .concat(middleware),
 });
-/**
- * export const persistore = persistStore(store);
- */
 
 export const persistor = persistStore(store);
 

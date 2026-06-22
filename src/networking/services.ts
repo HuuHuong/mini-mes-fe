@@ -28,6 +28,7 @@ export const apiClient: AxiosInstance = axios.create({
 // Request Interceptor: Attach bearer token if available
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
+    (config as any).startTime = Date.now();
     const token = localStorage.getItem("token");
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -87,7 +88,7 @@ apiClient.interceptors.response.use(
       }
 
       // Global handler for Auth Expired (401)
-      if (error.response.status === 401) {
+      if (error.response.data.code === 401) {
         localStorage.removeItem("token");
         // Dispatch custom event for 401 unauthorized to notify redux listener or application
         const unauthorizedEvent = new CustomEvent("api:unauthorized");

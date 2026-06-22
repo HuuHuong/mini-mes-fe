@@ -9,6 +9,7 @@ import {
 import { Sidebar } from "@components";
 import {
   LoginScreen,
+  ProductionProductsScreen,
   ProductionOrdersScreen,
   ProductionScheduleScreen,
   ProductionTrackingScreen,
@@ -36,14 +37,12 @@ interface RouteProps {
 }
 
 export const ProtectedRoute = memo(({ children }: RouteProps) => {
-  const { selector } = useRedux();
-  const token = selector((state) => state.app.token);
+  const token = localStorage.getItem("token");
   return token ? <>{children}</> : <Navigate to="/login" replace />;
 });
 
 export const PublicRoute = memo(({ children }: RouteProps) => {
-  const { selector } = useRedux();
-  const token = selector((state) => state.app.token);
+  const token = localStorage.getItem("token");
   return token ? <Navigate to="/dashboard" replace /> : <>{children}</>;
 });
 
@@ -81,6 +80,10 @@ export const AppRouter = memo(() => {
           }
         >
           {/* Production */}
+          <Route
+            path="/production/products"
+            element={<ProductionProductsScreen />}
+          />
           <Route
             path="/production/orders"
             element={<ProductionOrdersScreen />}
