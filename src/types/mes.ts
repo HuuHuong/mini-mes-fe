@@ -314,3 +314,49 @@ export interface IDashboardSummaryResponse {
   recent_work_orders: IRecentWorkOrderResponse[];
   machine_statuses: IMachineStatusSummary[];
 }
+
+// BOM (Bill of Materials)
+export interface ICreateBomItemRequest {
+  material_id: number;
+  quantity: number;
+  unit: string;
+  notes?: string;
+  sort_order: number;
+}
+
+export interface IUpdateBomItemRequest {
+  material_id: number;
+  quantity: number;
+  unit: string;
+  notes?: string;
+  sort_order: number;
+  is_active: boolean;
+}
+
+export interface ISetBomRequest {
+  items: ICreateBomItemRequest[];
+}
+
+export interface IBomItemResponse {
+  id: number;
+  product_id: number;
+  product_name: string;
+  material_id: number;
+  material_name: string;
+  material_sku: string;
+  quantity: number;
+  unit: string;
+  notes?: string;
+  sort_order: number;
+  is_active: boolean;
+  created_at: number;
+  updated_at?: number;
+}
+
+export interface IBomResponse {
+  product_id: number;
+  product_name: string;
+  product_sku: string;
+  total_items: number;
+  items: IBomItemResponse[];
+}

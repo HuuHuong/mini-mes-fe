@@ -56,11 +56,11 @@ export const useFunctions = () => {
     setCode("");
     setLocation("");
     setIsModalOpen(true);
-  }, []);
+  });
 
   const closeCreateModal = useEventCallback(() => {
     setIsModalOpen(false);
-  }, []);
+  });
 
   const handleCreateMachine = useEventCallback((e: React.FormEvent) => {
     e.preventDefault();

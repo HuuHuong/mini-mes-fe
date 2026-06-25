@@ -6,6 +6,7 @@ import {
   WORK_ORDER_ACTIONS,
   QUALITY_CHECK_ACTIONS,
   INVENTORY_ACTIONS,
+  BOM_ACTIONS,
 } from "@redux/redux-type";
 import {
   IDashboardSummaryResponse,
@@ -31,6 +32,11 @@ import {
   IInventoryStockResponse,
   IInventoryTransactionResponse,
   ICreateInventoryTransactionRequest,
+  ICreateBomItemRequest,
+  IUpdateBomItemRequest,
+  ISetBomRequest,
+  IBomItemResponse,
+  IBomResponse,
 } from "@types";
 
 // Dashboard
@@ -39,7 +45,7 @@ const getDashboardSummary = createAction(
   (params: {
     onSuccess: (data: IDashboardSummaryResponse) => void;
     onError?: (e: any) => void;
-  }) => ({ payload: params })
+  }) => ({ payload: params }),
 );
 
 export const dashboardActions = {
@@ -53,7 +59,7 @@ const getProducts = createAction(
     body?: IPaginatedRequest;
     onSuccess: (data: IPaginatedResponse<IProductResponse>) => void;
     onError?: (e: any) => void;
-  }) => ({ payload: params })
+  }) => ({ payload: params }),
 );
 
 const getProductById = createAction(
@@ -62,7 +68,7 @@ const getProductById = createAction(
     id: number;
     onSuccess: (data: IProductDetailResponse) => void;
     onError?: (e: any) => void;
-  }) => ({ payload: params })
+  }) => ({ payload: params }),
 );
 
 const createProduct = createAction(
@@ -71,7 +77,7 @@ const createProduct = createAction(
     body: ICreateProductRequest;
     onSuccess: (data: IProductResponse) => void;
     onError?: (e: any) => void;
-  }) => ({ payload: params })
+  }) => ({ payload: params }),
 );
 
 const updateProduct = createAction(
@@ -81,16 +87,16 @@ const updateProduct = createAction(
     body: IUpdateProductRequest;
     onSuccess: (data: IProductResponse) => void;
     onError?: (e: any) => void;
-  }) => ({ payload: params })
+  }) => ({ payload: params }),
 );
 
 const deleteProduct = createAction(
   PRODUCT_ACTIONS.DELETE,
   (params: {
     id: number;
-    onSuccess: () => void;
+    onSuccess: (data: any) => void;
     onError?: (e: any) => void;
-  }) => ({ payload: params })
+  }) => ({ payload: params }),
 );
 
 export const productActions = {
@@ -108,7 +114,7 @@ const getMachines = createAction(
     body?: IPaginatedRequest & { status?: number };
     onSuccess: (data: IPaginatedResponse<IMachineResponse>) => void;
     onError?: (e: any) => void;
-  }) => ({ payload: params })
+  }) => ({ payload: params }),
 );
 
 const getMachineById = createAction(
@@ -117,7 +123,7 @@ const getMachineById = createAction(
     id: number;
     onSuccess: (data: IMachineDetailResponse) => void;
     onError?: (e: any) => void;
-  }) => ({ payload: params })
+  }) => ({ payload: params }),
 );
 
 const createMachine = createAction(
@@ -126,7 +132,7 @@ const createMachine = createAction(
     body: ICreateMachineRequest;
     onSuccess: (data: IMachineResponse) => void;
     onError?: (e: any) => void;
-  }) => ({ payload: params })
+  }) => ({ payload: params }),
 );
 
 const updateMachine = createAction(
@@ -136,7 +142,7 @@ const updateMachine = createAction(
     body: IUpdateMachineRequest;
     onSuccess: (data: IMachineResponse) => void;
     onError?: (e: any) => void;
-  }) => ({ payload: params })
+  }) => ({ payload: params }),
 );
 
 const updateMachineStatus = createAction(
@@ -146,7 +152,7 @@ const updateMachineStatus = createAction(
     body: IUpdateMachineStatusRequest;
     onSuccess: (data: IMachineResponse) => void;
     onError?: (e: any) => void;
-  }) => ({ payload: params })
+  }) => ({ payload: params }),
 );
 
 export const machineActions = {
@@ -164,7 +170,7 @@ const getWorkOrders = createAction(
     body?: IPaginatedRequest & { status?: number };
     onSuccess: (data: IPaginatedResponse<IWorkOrderResponse>) => void;
     onError?: (e: any) => void;
-  }) => ({ payload: params })
+  }) => ({ payload: params }),
 );
 
 const getWorkOrderById = createAction(
@@ -173,7 +179,7 @@ const getWorkOrderById = createAction(
     id: number;
     onSuccess: (data: IWorkOrderDetailResponse) => void;
     onError?: (e: any) => void;
-  }) => ({ payload: params })
+  }) => ({ payload: params }),
 );
 
 const createWorkOrder = createAction(
@@ -182,7 +188,7 @@ const createWorkOrder = createAction(
     body: ICreateWorkOrderRequest;
     onSuccess: (data: IWorkOrderResponse) => void;
     onError?: (e: any) => void;
-  }) => ({ payload: params })
+  }) => ({ payload: params }),
 );
 
 const updateWorkOrder = createAction(
@@ -192,7 +198,7 @@ const updateWorkOrder = createAction(
     body: IUpdateWorkOrderRequest;
     onSuccess: (data: IWorkOrderResponse) => void;
     onError?: (e: any) => void;
-  }) => ({ payload: params })
+  }) => ({ payload: params }),
 );
 
 const updateWorkOrderStatus = createAction(
@@ -202,7 +208,7 @@ const updateWorkOrderStatus = createAction(
     body: IUpdateWorkOrderStatusRequest;
     onSuccess: (data: IWorkOrderResponse) => void;
     onError?: (e: any) => void;
-  }) => ({ payload: params })
+  }) => ({ payload: params }),
 );
 
 const recordWorkOrderOutput = createAction(
@@ -212,7 +218,7 @@ const recordWorkOrderOutput = createAction(
     body: IRecordOutputRequest;
     onSuccess: (data: IWorkOrderResponse) => void;
     onError?: (e: any) => void;
-  }) => ({ payload: params })
+  }) => ({ payload: params }),
 );
 
 export const workOrderActions = {
@@ -231,7 +237,7 @@ const getQualityChecks = createAction(
     body?: IPaginatedRequest & { work_order_id?: number; result?: number };
     onSuccess: (data: IPaginatedResponse<IQualityCheckResponse>) => void;
     onError?: (e: any) => void;
-  }) => ({ payload: params })
+  }) => ({ payload: params }),
 );
 
 const createQualityCheck = createAction(
@@ -240,7 +246,7 @@ const createQualityCheck = createAction(
     body: ICreateQualityCheckRequest;
     onSuccess: (data: IQualityCheckResponse) => void;
     onError?: (e: any) => void;
-  }) => ({ payload: params })
+  }) => ({ payload: params }),
 );
 
 export const qualityCheckActions = {
@@ -255,16 +261,18 @@ const getStockSummary = createAction(
     body?: IPaginatedRequest;
     onSuccess: (data: IPaginatedResponse<IInventoryStockResponse>) => void;
     onError?: (e: any) => void;
-  }) => ({ payload: params })
+  }) => ({ payload: params }),
 );
 
 const getTransactions = createAction(
   INVENTORY_ACTIONS.GET_TRANSACTIONS,
   (params: {
     body?: IPaginatedRequest & { product_id?: number };
-    onSuccess: (data: IPaginatedResponse<IInventoryTransactionResponse>) => void;
+    onSuccess: (
+      data: IPaginatedResponse<IInventoryTransactionResponse>,
+    ) => void;
     onError?: (e: any) => void;
-  }) => ({ payload: params })
+  }) => ({ payload: params }),
 );
 
 const createTransaction = createAction(
@@ -273,11 +281,70 @@ const createTransaction = createAction(
     body: ICreateInventoryTransactionRequest;
     onSuccess: (data: IInventoryTransactionResponse) => void;
     onError?: (e: any) => void;
-  }) => ({ payload: params })
+  }) => ({ payload: params }),
 );
 
 export const inventoryActions = {
   getStockSummary,
   getTransactions,
   createTransaction,
+};
+
+// BOM
+const getBom = createAction(
+  BOM_ACTIONS.GET,
+  (params: {
+    productId: number;
+    onSuccess: (data: IBomResponse) => void;
+    onError?: (e: any) => void;
+  }) => ({ payload: params }),
+);
+
+const addBomItem = createAction(
+  BOM_ACTIONS.ADD_ITEM,
+  (params: {
+    productId: number;
+    body: ICreateBomItemRequest;
+    onSuccess: (data: IBomItemResponse) => void;
+    onError?: (e: any) => void;
+  }) => ({ payload: params }),
+);
+
+const updateBomItem = createAction(
+  BOM_ACTIONS.UPDATE_ITEM,
+  (params: {
+    productId: number;
+    id: number;
+    body: IUpdateBomItemRequest;
+    onSuccess: (data: IBomItemResponse) => void;
+    onError?: (e: any) => void;
+  }) => ({ payload: params }),
+);
+
+const deleteBomItem = createAction(
+  BOM_ACTIONS.DELETE_ITEM,
+  (params: {
+    productId: number;
+    id: number;
+    onSuccess: () => void;
+    onError?: (e: any) => void;
+  }) => ({ payload: params }),
+);
+
+const setBom = createAction(
+  BOM_ACTIONS.SET,
+  (params: {
+    productId: number;
+    body: ISetBomRequest;
+    onSuccess: (data: IBomResponse) => void;
+    onError?: (e: any) => void;
+  }) => ({ payload: params }),
+);
+
+export const bomActions = {
+  get: getBom,
+  addItem: addBomItem,
+  updateItem: updateBomItem,
+  deleteItem: deleteBomItem,
+  set: setBom,
 };

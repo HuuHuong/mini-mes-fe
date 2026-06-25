@@ -1,12 +1,18 @@
 import { useEffect, useState } from "react";
 import { useRedux, useEventCallback } from "@common";
 import { inventoryActions, productActions } from "@redux/redux-action";
-import { IInventoryTransactionResponse, IProductResponse, ICreateInventoryTransactionRequest } from "@types";
+import {
+  IInventoryTransactionResponse,
+  IProductResponse,
+  ICreateInventoryTransactionRequest,
+} from "@types";
 
 export const useFunctions = () => {
   const { dispatch } = useRedux();
   const [loading, setLoading] = useState(false);
-  const [transactions, setTransactions] = useState<IInventoryTransactionResponse[]>([]);
+  const [transactions, setTransactions] = useState<
+    IInventoryTransactionResponse[]
+  >([]);
   const [products, setProducts] = useState<IProductResponse[]>([]);
   const [page, setPage] = useState(1);
   const [pageSize] = useState(10);
@@ -35,7 +41,7 @@ export const useFunctions = () => {
           console.error("Failed to fetch transactions", error);
           setLoading(false);
         },
-      })
+      }),
     );
   });
 
@@ -47,9 +53,12 @@ export const useFunctions = () => {
           setProducts(response.items.filter((p) => p.is_active));
         },
         onError: (error) => {
-          console.error("Failed to fetch products for transaction selection", error);
+          console.error(
+            "Failed to fetch products for transaction selection",
+            error,
+          );
         },
-      })
+      }),
     );
   });
 
@@ -63,11 +72,11 @@ export const useFunctions = () => {
     setQuantity("");
     setReference("");
     setIsModalOpen(true);
-  }, []);
+  });
 
   const closeCreateModal = useEventCallback(() => {
     setIsModalOpen(false);
-  }, []);
+  });
 
   const handleCreateTransaction = useEventCallback((e: React.FormEvent) => {
     e.preventDefault();
@@ -95,7 +104,7 @@ export const useFunctions = () => {
           alert(error.message || "Failed to log transaction");
           setLoading(false);
         },
-      })
+      }),
     );
   });
 

@@ -30,7 +30,7 @@ export const useFunctions = () => {
           console.error("Failed to fetch inventory stock summary", error);
           setLoading(false);
         },
-      })
+      }),
     );
   });
 
@@ -38,10 +38,12 @@ export const useFunctions = () => {
     fetchStock();
   }, [fetchStock]);
 
-  const onSearchChange = useEventCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
-    setPage(1);
-  }, []);
+  const onSearchChange = useEventCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSearch(e.target.value);
+      setPage(1);
+    },
+  );
 
   return {
     loading,

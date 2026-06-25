@@ -8,6 +8,7 @@ import {
   workOrderActions,
   qualityCheckActions,
   inventoryActions,
+  bomActions,
 } from "@redux/redux-action";
 
 // Dashboard
@@ -337,6 +338,80 @@ takeLatestListeners(true)({
     const { body, onSuccess, onError } = action.payload;
     try {
       const response = await apiClient.post(ApiConstants.INVENTORY_TRANSACTIONS, body);
+      if (response) {
+        onSuccess(response.data);
+      }
+    } catch (e) {
+      onError?.(e);
+    }
+  },
+});
+
+// BOM
+takeLatestListeners(true)({
+  actionCreator: bomActions.get,
+  effect: async (action) => {
+    const { productId, onSuccess, onError } = action.payload;
+    try {
+      const response = await apiClient.get(`products/${productId}/bom`);
+      if (response) {
+        onSuccess(response.data);
+      }
+    } catch (e) {
+      onError?.(e);
+    }
+  },
+});
+
+takeLatestListeners(true)({
+  actionCreator: bomActions.addItem,
+  effect: async (action) => {
+    const { productId, body, onSuccess, onError } = action.payload;
+    try {
+      const response = await apiClient.post(`products/${productId}/bom/items`, body);
+      if (response) {
+        onSuccess(response.data);
+      }
+    } catch (e) {
+      onError?.(e);
+    }
+  },
+});
+
+takeLatestListeners(true)({
+  actionCreator: bomActions.updateItem,
+  effect: async (action) => {
+    const { productId, id, body, onSuccess, onError } = action.payload;
+    try {
+      const response = await apiClient.put(`products/${productId}/bom/items/${id}`, body);
+      if (response) {
+        onSuccess(response.data);
+      }
+    } catch (e) {
+      onError?.(e);
+    }
+  },
+});
+
+takeLatestListeners(true)({
+  actionCreator: bomActions.deleteItem,
+  effect: async (action) => {
+    const { productId, id, onSuccess, onError } = action.payload;
+    try {
+      await apiClient.delete(`products/${productId}/bom/items/${id}`);
+      onSuccess();
+    } catch (e) {
+      onError?.(e);
+    }
+  },
+});
+
+takeLatestListeners(true)({
+  actionCreator: bomActions.set,
+  effect: async (action) => {
+    const { productId, body, onSuccess, onError } = action.payload;
+    try {
+      const response = await apiClient.put(`products/${productId}/bom`, body);
       if (response) {
         onSuccess(response.data);
       }

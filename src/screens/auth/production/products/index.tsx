@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { useFunctions } from "./useFunctions";
+import { ProductRow, BomModal } from "./components";
 
 export const ProductionProductsScreen = memo(() => {
   const {
@@ -20,6 +21,32 @@ export const ProductionProductsScreen = memo(() => {
     closeCreateModal,
     handleCreateProduct,
     toggleProductActive,
+
+    // BOM Exports
+    isBomModalOpen,
+    selectedProductForBom,
+    bomData,
+    allMaterials,
+    bomLoading,
+    editingBomItemId,
+    materialId,
+    bomQuantity,
+    bomUnit,
+    bomNotes,
+    bomSortOrder,
+    bomIsActive,
+    openBomModal,
+    closeBomModal,
+    handleEditBomItemClick,
+    handleCancelEditBomItem,
+    handleAddOrUpdateBomItem,
+    handleDeleteBomItem,
+    onChangeMaterialId,
+    onChangeBomQuantity,
+    onChangeBomUnit,
+    onChangeBomNotes,
+    onChangeBomSortOrder,
+    onChangeBomIsActive,
   } = useFunctions();
 
   return (
@@ -73,40 +100,12 @@ export const ProductionProductsScreen = memo(() => {
               </tr>
             ) : (
               products.map((product) => (
-                <tr key={product.id} className="hover:bg-slate-900/30 transition-all">
-                  <td className="px-6 py-4 font-semibold text-white">{product.name}</td>
-                  <td className="px-6 py-4">
-                    <span className="font-mono bg-slate-800 text-indigo-300 px-2.5 py-1 rounded text-xs">
-                      {product.sku}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">{product.unit}</td>
-                  <td className="px-6 py-4 text-slate-400 max-w-xs truncate">{product.description || "-"}</td>
-                  <td className="px-6 py-4">
-                    <span
-                      className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold ${
-                        product.is_active
-                          ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                          : "bg-rose-500/10 text-rose-400 border border-rose-500/20"
-                      }`}
-                    >
-                      <span className={`w-1.5 h-1.5 rounded-full ${product.is_active ? "bg-emerald-400" : "bg-rose-400"}`} />
-                      {product.is_active ? "Active" : "Inactive"}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <button
-                      onClick={() => toggleProductActive(product)}
-                      className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-all cursor-pointer ${
-                        product.is_active
-                          ? "border-rose-500/20 text-rose-400 hover:bg-rose-500/10"
-                          : "border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/10"
-                      }`}
-                    >
-                      {product.is_active ? "Deactivate" : "Activate"}
-                    </button>
-                  </td>
-                </tr>
+                <ProductRow
+                  key={product.id}
+                  product={product}
+                  onOpenBom={openBomModal}
+                  onToggleActive={toggleProductActive}
+                />
               ))
             )}
           </tbody>
@@ -115,7 +114,7 @@ export const ProductionProductsScreen = memo(() => {
 
       {/* Creation Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fade-in">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-955/80 backdrop-blur-sm animate-fade-in">
           <div className="w-full max-w-lg bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl space-y-4">
             <div className="flex justify-between items-center border-b border-slate-800 pb-3">
               <h3 className="text-lg font-bold text-white">Create New Product</h3>
@@ -202,6 +201,35 @@ export const ProductionProductsScreen = memo(() => {
             </form>
           </div>
         </div>
+      )}
+
+      {/* BOM Management Modal */}
+      {selectedProductForBom && (
+        <BomModal
+          isOpen={isBomModalOpen}
+          product={selectedProductForBom}
+          bomData={bomData}
+          allMaterials={allMaterials}
+          bomLoading={bomLoading}
+          editingItemId={editingBomItemId}
+          materialId={materialId}
+          quantity={bomQuantity}
+          unit={bomUnit}
+          notes={bomNotes}
+          sortOrder={bomSortOrder}
+          isActive={bomIsActive}
+          onClose={closeBomModal}
+          onEditItem={handleEditBomItemClick}
+          onCancelEdit={handleCancelEditBomItem}
+          onSubmit={handleAddOrUpdateBomItem}
+          onDeleteItem={handleDeleteBomItem}
+          onChangeMaterial={onChangeMaterialId}
+          onChangeQuantity={onChangeBomQuantity}
+          onChangeUnit={onChangeBomUnit}
+          onChangeNotes={onChangeBomNotes}
+          onChangeSortOrder={onChangeBomSortOrder}
+          onChangeIsActive={onChangeBomIsActive}
+        />
       )}
     </div>
   );

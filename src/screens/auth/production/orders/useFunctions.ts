@@ -107,22 +107,67 @@ export const useFunctions = () => {
     );
   });
 
+  const fetchWorkOrderDetail = useEventCallback((id: number) => {
+    dispatch(
+      workOrderActions.getById({
+        id,
+        onSuccess: (detail) => {
+          setSelectedWorkOrderDetail(detail);
+        },
+        onError: (error: any) => {
+          console.error("Failed to refresh work order details", error);
+        },
+      }),
+    );
+  });
+
+  const startConnection = useEventCallback(async () => {
+    try {
+      if (connection.state === signalR.HubConnectionState.Disconnected) {
+        await connection.start();
+        console.log("SignalR Connected.");
+      }
+    } catch (err) {
+      console.error("SignalR Connection Error: ", err);
+    }
+  });
+
+  const onProductionOutputUpdated = useEventCallback((data: any) => {
+    console.log("ProductionOutputUpdated:", data);
+    fetchWorkOrders();
+    if (isDetailsModalOpen && currentWorkOrderId !== null) {
+      fetchWorkOrderDetail(currentWorkOrderId);
+    }
+  });
+
+  const onWorkOrderStatusChanged = useEventCallback((data: any) => {
+    console.log("WorkOrderStatusChanged:", data);
+    fetchWorkOrders();
+    if (isDetailsModalOpen && currentWorkOrderId !== null) {
+      fetchWorkOrderDetail(currentWorkOrderId);
+    }
+  });
+
   useEffect(() => {
-    processRealTime();
-  }, []);
+    startConnection();
+
+    connection.on("ProductionOutputUpdated", onProductionOutputUpdated);
+    connection.on("WorkOrderStatusChanged", onWorkOrderStatusChanged);
+
+    return () => {
+      connection.off("ProductionOutputUpdated", onProductionOutputUpdated);
+      connection.off("WorkOrderStatusChanged", onWorkOrderStatusChanged);
+    };
+  }, [
+    startConnection,
+    onProductionOutputUpdated,
+    onWorkOrderStatusChanged,
+  ]);
 
   useEffect(() => {
     fetchWorkOrders();
     fetchDependencies();
   }, [fetchWorkOrders, fetchDependencies]);
-
-  const processRealTime = useEventCallback(async () => {
-    await connection.start();
-  });
-
-  connection.on("ProductionOutputUpdated", (data) => {
-    console.log("updated", data);
-  });
 
   const openCreateModal = useEventCallback(() => {
     setSelectedProductId("");
@@ -133,11 +178,11 @@ export const useFunctions = () => {
     setNotes("");
     setAddedProducts([]);
     setIsCreateModalOpen(true);
-  }, []);
+  });
 
   const closeCreateModal = useEventCallback(() => {
     setIsCreateModalOpen(false);
-  }, []);
+  });
 
   const openOutputModal = useEventCallback((id: number) => {
     setCurrentWorkOrderId(id);
@@ -145,11 +190,11 @@ export const useFunctions = () => {
     setOutputQuantity("");
     setDefectQuantity(0);
     setIsOutputModalOpen(true);
-  }, []);
+  });
 
   const closeOutputModal = useEventCallback(() => {
     setIsOutputModalOpen(false);
-  }, []);
+  });
 
   const openDetailsModal = useEventCallback((id: number) => {
     setLoading(true);
@@ -172,7 +217,7 @@ export const useFunctions = () => {
   const closeDetailsModal = useEventCallback(() => {
     setIsDetailsModalOpen(false);
     setSelectedWorkOrderDetail(null);
-  }, []);
+  });
 
   const handleCreateWorkOrder = useEventCallback((e: React.FormEvent) => {
     e.preventDefault();
@@ -274,41 +319,59 @@ export const useFunctions = () => {
   );
 
   // New onChange handlers
-  const onChangeMachine = useEventCallback((e: ChangeEvent<HTMLSelectElement>) => {
-    setSelectedMachineId(e.target.value ? Number(e.target.value) : "");
-  });
+  const onChangeMachine = useEventCallback(
+    (e: ChangeEvent<HTMLSelectElement>) => {
+      setSelectedMachineId(e.target.value ? Number(e.target.value) : "");
+    },
+  );
 
-  const onChangeProduct = useEventCallback((e: ChangeEvent<HTMLSelectElement>) => {
-    setSelectedProductId(e.target.value ? Number(e.target.value) : "");
-  });
+  const onChangeProduct = useEventCallback(
+    (e: ChangeEvent<HTMLSelectElement>) => {
+      setSelectedProductId(e.target.value ? Number(e.target.value) : "");
+    },
+  );
 
-  const onChangeTargetQuantity = useEventCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setTargetQuantity(e.target.value === "" ? "" : Number(e.target.value));
-  });
+  const onChangeTargetQuantity = useEventCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      setTargetQuantity(e.target.value === "" ? "" : Number(e.target.value));
+    },
+  );
 
-  const onChangePlannedStart = useEventCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setPlannedStart(e.target.value);
-  });
+  const onChangePlannedStart = useEventCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      setPlannedStart(e.target.value);
+    },
+  );
 
-  const onChangePlannedEnd = useEventCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setPlannedEnd(e.target.value);
-  });
+  const onChangePlannedEnd = useEventCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      setPlannedEnd(e.target.value);
+    },
+  );
 
-  const onChangeNotes = useEventCallback((e: ChangeEvent<HTMLTextAreaElement>) => {
-    setNotes(e.target.value);
-  });
+  const onChangeNotes = useEventCallback(
+    (e: ChangeEvent<HTMLTextAreaElement>) => {
+      setNotes(e.target.value);
+    },
+  );
 
-  const onChangeOutputProduct = useEventCallback((e: ChangeEvent<HTMLSelectElement>) => {
-    setSelectedOutputProductId(e.target.value ? Number(e.target.value) : "");
-  });
+  const onChangeOutputProduct = useEventCallback(
+    (e: ChangeEvent<HTMLSelectElement>) => {
+      setSelectedOutputProductId(e.target.value ? Number(e.target.value) : "");
+    },
+  );
 
-  const onChangeOutputQuantity = useEventCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setOutputQuantity(e.target.value === "" ? "" : Number(e.target.value));
-  });
+  const onChangeOutputQuantity = useEventCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      setOutputQuantity(e.target.value === "" ? "" : Number(e.target.value));
+    },
+  );
 
-  const onChangeDefectQuantity = useEventCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setDefectQuantity(e.target.value === "" ? "" : Number(e.target.value));
-  });
+  const onChangeDefectQuantity = useEventCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      setDefectQuantity(e.target.value === "" ? "" : Number(e.target.value));
+    },
+  );
 
   // Product Add/Remove handlers
   const handleAddProduct = useEventCallback(() => {
@@ -316,7 +379,9 @@ export const useFunctions = () => {
       alert("Please select product and set target quantity first.");
       return;
     }
-    if (addedProducts.some((ap) => ap.product_id === Number(selectedProductId))) {
+    if (
+      addedProducts.some((ap) => ap.product_id === Number(selectedProductId))
+    ) {
       alert("This product is already added.");
       return;
     }
@@ -342,7 +407,9 @@ export const useFunctions = () => {
   // Selector for output modal products
   const outputProducts = useMemo(() => {
     if (currentWorkOrderId === null) return [];
-    return workOrders.find((wo) => wo.id === currentWorkOrderId)?.products || [];
+    return (
+      workOrders.find((wo) => wo.id === currentWorkOrderId)?.products || []
+    );
   }, [workOrders, currentWorkOrderId]);
 
   return {
